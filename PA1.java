@@ -24,10 +24,13 @@ public class PA1 {
         }
         for (int j = 0; j < edges.size(); j++) {
             /* find the neighbors of every node by traversing the edges list */
+            /* bidirectional so source -> target and target -> source are recorded */
             String source = edges.get(j).s;
-            int indexOfSource = Integer.parseInt(source.substring(1));
             String target = edges.get(j).t;
+            int indexOfSource = Integer.parseInt(source.substring(1));
+            int indexOfTarget = Integer.parseInt(target.substring(1));
             adjacencyList.get(indexOfSource).add(target);
+            adjacencyList.get(indexOfTarget).add(source);
         }
         return adjacencyList;
     }
