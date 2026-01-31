@@ -76,6 +76,15 @@ public class PA1 {
         return result;
     }
 
+    public static ArrayList<String> breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start) {
+        int n = adjacencyList.size();
+        Color[] colors = new Color[n];
+        Arrays.fill(colors, Color.WHITE);
+        ArrayList<String> result = new ArrayList<>();
+        breadthFirstSearch(adjacencyList, start, colors, result);
+        return result;
+    }
+
 	public static void main(String[] args) {
 
 		Scanner stdin = new Scanner(System.in);
@@ -111,8 +120,10 @@ public class PA1 {
 			System.out.println("");
 
             // YOUR CODE HERE (or called from here)
-            ArrayList<LinkedList<String>> adj =  buildAdjacencyList(nodes, edges);
+            ArrayList<LinkedList<String>> adj = buildAdjacencyList(nodes, edges);
             ArrayList<String> bfs = breadthFirstSearchDisconnected(adj);
+            Color[] colors = new Color[adj.size()];
+            Arrays.fill(colors, Color.WHITE);
             System.out.print("[");
             for (int j = 0; j < adj.size(); j++) {
                 if (j == adj.size() - 1) {
@@ -125,6 +136,12 @@ public class PA1 {
             System.out.println("");
             System.out.println(bfs.toString());
             System.out.println("");
+            /* now it's time for handling the query! */
+            for (int j = 0; j < queries.size(); j++) {
+                int source = Integer.parseInt(queries.get(j).s);
+                int destination = Integer.parseInt(queries.get(j).t);
+                /* TODO: run breadthFirstSearchByVertexIndex(source) and when == destination, stop and return how many steps counted and the next hop from source */
+            }
         }
     }
 }
