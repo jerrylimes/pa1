@@ -76,13 +76,35 @@ public class PA1 {
         return result;
     }
 
-    public static ArrayList<String> breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start) {
+    public static int[] breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start, int destination) {
         int n = adjacencyList.size();
         Color[] colors = new Color[n];
         Arrays.fill(colors, Color.WHITE);
-        ArrayList<String> result = new ArrayList<>();
-        breadthFirstSearch(adjacencyList, start, colors, result);
-        return result;
+        int[] parent = new int[n];
+        int[] distance = new int[n];
+        Arrays.fill(parent, -1);
+        Arrays.fill(distance, -1);
+        Queue<Integer> exploreLater = new LinkedList<>();
+        colors[start] = Color.GRAY;
+        distance[start] = 0;
+        exploreLater.add(start);
+        while (!exploreLater.isEmpty()) {
+            int u = exploreLater.poll();
+            if (u == destination) {
+                break;
+            }
+            for (String neighbor : adjacencyList.get(u)) {
+                int v = Integer.parseInt(neighbor.substring(1));
+                if (colors[v] == Color.WHITE) {
+                    colors[v] = Color.GRAY;
+                    parent[v] = u;
+                    distance[v] = distance[u] + 1;
+                    exploreLater.add(v);
+                }
+            }
+            colors[u] = Color.BLACK;
+        }
+        return parent;
     }
 
 	public static void main(String[] args) {
@@ -138,9 +160,13 @@ public class PA1 {
             System.out.println("");
             /* now it's time for handling the query! */
             for (int j = 0; j < queries.size(); j++) {
-                int source = Integer.parseInt(queries.get(j).s);
-                int destination = Integer.parseInt(queries.get(j).t);
+                int source = Integer.parseInt(queries.get(j).s.substring(1));
+                int destination = Integer.parseInt(queries.get(j).t.substring(1));
                 /* TODO: run breadthFirstSearchByVertexIndex(source) and when == destination, stop and return how many steps counted and the next hop from source */
+                int[] queryStepsRecord = breadthFirstSearchByVertexIndex(adj, source, destination);
+                for (int k = 0; k < queryStepsRecord.length; k++) {
+                    System.out.println(queryStepsRecord[k]);
+                }
             }
         }
     }
