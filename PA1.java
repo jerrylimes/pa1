@@ -15,6 +15,13 @@ class Pair {
 }
 
 public class PA1 {
+    /**
+     * Method building the adjacency list given nodes and edges in a graph.
+     *
+     * @param nodes list of nodes
+     * @param edges list of edges
+     * @return adjacencyList
+     */
     public static ArrayList<LinkedList<String>> buildAdjacencyList(ArrayList<String> nodes, ArrayList<Pair> edges) {
         /* adjacency list */
         ArrayList<LinkedList<String>> adjacencyList = new ArrayList<LinkedList<String>>();
@@ -35,6 +42,14 @@ public class PA1 {
         return adjacencyList;
     }
 
+    /**
+     * Method doing a breadth-first search on a graph. Colors are used instead of boolean values. This implementation is largely the same as the pseudocode covered in class, except that instead of negative infinity, I used -1 here.
+     *
+     * @param adjacencyList a graph
+     * @param src           node from which the BFS starts
+     * @param colors        an array recording which node has been explored (this is necessary because there are graphs that are disconnected in test cases)
+     * @param result        tree of result
+     */
     public static void breadthFirstSearch(ArrayList<LinkedList<String>> adjacencyList, int src, Color[] colors, ArrayList<String> result) {
         /* now it's time to build the BFS tree! */
         int[] parent = new int[adjacencyList.size()];
@@ -63,6 +78,10 @@ public class PA1 {
     }
 
     /* portions inspired from https://www.geeksforgeeks.org/dsa/breadth-first-search-or-bfs-for-a-graph/ */
+
+    /**
+     * This method calls the above method to account for disconnected graph by going through the <code>adjacencyList</code> and see what nodes need to be explored.
+     */
     public static ArrayList<String> breadthFirstSearchDisconnected(ArrayList<LinkedList<String>> adjacencyList) {
         int n = adjacencyList.size();
         Color[] colors = new Color[n];
@@ -76,6 +95,15 @@ public class PA1 {
         return result;
     }
 
+    /**
+     * Method for querying. A query is similar to doing a BFS starting at a given node, but we stop when we reach the destination.
+     * Hence the <code>if</code> block.
+     *
+     * @param adjacencyList
+     * @param start
+     * @param destination
+     * @return
+     */
     public static int[] breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start, int destination) {
         int n = adjacencyList.size();
         Color[] colors = new Color[n];
@@ -164,10 +192,21 @@ public class PA1 {
                 int destination = Integer.parseInt(queries.get(j).t.substring(1));
                 /* TODO: run breadthFirstSearchByVertexIndex(source) and when == destination, stop and return how many steps counted and the next hop from source */
                 int[] queryStepsRecord = breadthFirstSearchByVertexIndex(adj, source, destination);
-                for (int k = 0; k < queryStepsRecord.length; k++) {
-                    System.out.println(queryStepsRecord[k]);
+                if (source != destination && queryStepsRecord[destination] == -1) {
+                    System.out.println(source + " " + destination + " None None");
+                } else {
+                    int steps = 0;
+                    int cur = destination;
+                    while (queryStepsRecord[cur] != source) {
+                        cur = queryStepsRecord[cur];
+                        steps++;
+                    }
+                    steps++;
+                    System.out.println("v" + source + " " + "v" + destination + " " + steps + " " + "v" + cur);
                 }
             }
+            System.out.println("");
+            System.out.println("");
         }
     }
 }
