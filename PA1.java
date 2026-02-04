@@ -138,7 +138,7 @@ public class PA1 {
 		int test_cases = stdin.nextInt();
 
 		for ( int i = 0; i < test_cases; i++ ) {
-			
+
 			// read in n, e, and q
 			int n = stdin.nextInt();
 			int e = stdin.nextInt();
@@ -159,31 +159,11 @@ public class PA1 {
 			for ( int j = 0; j < q; j++ )
 				queries.add(new Pair(stdin.next(),stdin.next()));
 
-			System.out.println("test case " + i + ":");
-			System.out.println("there are " + n + " nodes, " + e + " edges, and " + q + " queries");
-			System.out.println("the nodes are: " + nodes);
-			System.out.println("the edges are: " + edges);
-			System.out.println("the queries are: " + queries);
-			System.out.println("");
-
             // YOUR CODE HERE (or called from here)
             ArrayList<LinkedList<String>> adj = buildAdjacencyList(nodes, edges);
             int[][] bfsForest = new int[n][];
-            ArrayList<String> bfs = breadthFirstSearchDisconnected(adj);
             Color[] colors = new Color[adj.size()];
             Arrays.fill(colors, Color.WHITE);
-            System.out.print("[");
-            for (int j = 0; j < adj.size(); j++) {
-                if (j == adj.size() - 1) {
-                    System.out.print("v" + j + ": " + adj.get(j).toString());
-                } else {
-                    System.out.print("v" + j + ": " + adj.get(j).toString() + " ");
-                }
-            }
-            System.out.print("]");
-            System.out.println("");
-            System.out.println(bfs.toString());
-            System.out.println("");
             /* now it's time for handling the query! */
             for (int j = 0; j < queries.size(); j++) {
                 int source = Integer.parseInt(queries.get(j).s.substring(1));
@@ -210,7 +190,6 @@ public class PA1 {
                     System.out.println("v" + source + " " + "v" + destination + " " + steps + " " + "v" + cur);
                 }
             }
-            System.out.println("");
             System.out.println("");
         }
     }
