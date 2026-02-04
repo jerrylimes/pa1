@@ -104,7 +104,7 @@ public class PA1 {
      * @param destination
      * @return
      */
-    public static int[] breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start, int destination) {
+    public static int[] breadthFirstSearchByVertexIndex(ArrayList<LinkedList<String>> adjacencyList, int start) {
         int n = adjacencyList.size();
         Color[] colors = new Color[n];
         Arrays.fill(colors, Color.WHITE);
@@ -118,9 +118,6 @@ public class PA1 {
         exploreLater.add(start);
         while (!exploreLater.isEmpty()) {
             int u = exploreLater.poll();
-            if (u == destination) {
-                break;
-            }
             for (String neighbor : adjacencyList.get(u)) {
                 int v = Integer.parseInt(neighbor.substring(1));
                 if (colors[v] == Color.WHITE) {
@@ -171,6 +168,7 @@ public class PA1 {
 
             // YOUR CODE HERE (or called from here)
             ArrayList<LinkedList<String>> adj = buildAdjacencyList(nodes, edges);
+            int[][] bfsForest = new int[n][];
             ArrayList<String> bfs = breadthFirstSearchDisconnected(adj);
             Color[] colors = new Color[adj.size()];
             Arrays.fill(colors, Color.WHITE);
@@ -191,9 +189,16 @@ public class PA1 {
                 int source = Integer.parseInt(queries.get(j).s.substring(1));
                 int destination = Integer.parseInt(queries.get(j).t.substring(1));
                 /* TODO: run breadthFirstSearchByVertexIndex(source) and when == destination, stop and return how many steps counted and the next hop from source */
-                int[] queryStepsRecord = breadthFirstSearchByVertexIndex(adj, source, destination);
+                if (bfsForest[source] == null) {
+                    bfsForest[source] = breadthFirstSearchByVertexIndex(adj, source);
+                }
+                int[] queryStepsRecord = bfsForest[source];
+                if (source == destination) {
+                    System.out.println("v" + source + " " + "v" + destination + " 0 None");
+                    continue;
+                }
                 if (source != destination && queryStepsRecord[destination] == -1) {
-                    System.out.println(source + " " + destination + " None None");
+                    System.out.println("v" + source + " " + "v" + destination + " None None");
                 } else {
                     int steps = 0;
                     int cur = destination;
